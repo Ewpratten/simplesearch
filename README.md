@@ -7,5 +7,4 @@ SimpleSearch depends on the following external projects, and fetches them all at
 
  - [cxxopts](https://github.com/jarro2783/cxxopts)
  - [cURLpp](https://github.com/jpbarrette/curlpp)
-
-***The host system must have `curl` installed***
+ - [cURL](https://github.com/curl/curl)

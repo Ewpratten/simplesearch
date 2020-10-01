@@ -17,6 +17,7 @@ void beginCrawling(std::string url, int maxDepth, int maxWidth,
 
     // Handle running the queue
     completedTasks = 0;
+    crawler::init();
     while (taskQueue.size() > 0) {
         // Run the task
         taskQueue.front().run(taskQueue);
@@ -31,6 +32,7 @@ void beginCrawling(std::string url, int maxDepth, int maxWidth,
                       << std::endl;
         }
     }
+    crawler::close();
 }
 
 int getCompletedTaskCount() { return completedTasks; }

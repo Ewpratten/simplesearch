@@ -37,6 +37,13 @@ http_archive(
     url = "https://github.com/jarro2783/cxxopts/archive/v2.2.1.tar.gz",
 )
 
+http_archive(
+    name = "curl",
+    build_file = "//thirdparty/curl:BUILD",
+    strip_prefix = "curl-master",
+    url = "https://github.com/curl/curl/archive/master.zip",
+)
+
 # cURLpp
 http_archive(
     name = "curlpp",
