@@ -39,3 +39,6 @@ For example, I like to use the following command to test the crawler:
 bazel run //crawler -- https://retrylife.ca -d 2 -w 5
 ```
 
+## Crawling a new webpage from the GUI
+
+Clicking `submit` in the navigation bar will allow you to crawl a website from the browser. This uses multithreading.

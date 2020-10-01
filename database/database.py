@@ -92,7 +92,6 @@ def query(keywords: List[str]) -> List[dict]:
                 if word.lower() == keyword:
                     found_keys += 1
                 if word.lower() and keyword in word.lower():
-                    print(word, keyword)
                     found_keys += 1
                     
         return  (found_keys >= (num_keywords / 2))
