@@ -1,5 +1,6 @@
-# SimpleSearch
-A simplistic search engine and web crawler built for learning purposes
+# SimpleSearch ![Build App](https://github.com/Ewpratten/simplesearch/workflows/Build%20App/badge.svg)
+
+A simplistic search engine and web crawler built for learning purposes. This is not, in any way, production grade. 
 
 ## Running the webserver locally
 
