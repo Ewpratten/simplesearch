@@ -10,8 +10,6 @@ void beginCrawling(std::string url, int maxDepth, int maxWidth,
 
 int getCompletedTaskCount();
 
-void stop();
-
 }  // namespace manager
 
 #endif  // _SIMPLESEARCH_CRAWLER_MANAGER_CRAWLERMANAGER_HH
