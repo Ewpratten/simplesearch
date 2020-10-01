@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>SimpleSearch</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Spacer -->
+    <div style="height:25vh;"></div>
+
+    <!-- Title -->
+    <div style="text-align:center">
+        <h1>SimpleSearch</h1>
+        <h5>Enter a query below</h5>
+    </div>
+
+    <br>
+
+    <div style="margin:auto;text-align:center;width:max-content;">
+        <form class="form-inline" method="POST">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" style="margin:auto;">Search</button>
+        </form>
+    </div>
+
+
+</div>
+{% endblock %}

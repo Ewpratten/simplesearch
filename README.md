@@ -1,6 +1,14 @@
 # SimpleSearch
 A simplistic search engine and web crawler built for learning purposes
 
+## Running the webserver locally
+
+The buildsystem will handle everything for you, all you need to do is run:
+
+```sh
+bazel run //server
+```
+
 ## Crawling a new webpage from the command line
 
 To index a new webpage from the commandline, use the `crawler` module. The following command shows it's information:

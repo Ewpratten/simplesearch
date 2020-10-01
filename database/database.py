@@ -2,9 +2,12 @@
 
 from tinydb import TinyDB, Query
 from typing import List
+import os
 
 # DB for the entire search engine
-_engine_db_path = "./engine_database.json"
+_engine_db_path = os.path.expanduser("~/simplesearch_engine_database.json")
+print(f"Using database at: {os.path.abspath(_engine_db_path)}")
+
 
 # Search tools
 _page = Query()
@@ -23,9 +26,11 @@ def isPageIndexed(url: str, db: TinyDB = None) -> bool:
     # Handle external call
     if db == None:
         with TinyDB(_engine_db_path) as db:
-            return len(db.search(_page.url == url)) > 0
+            table = db.table("search", cache_size=0)
+            return len(table.search(_page.url == url)) > 0
     else:
-        return len(db.search(_page.url == url)) > 0
+        table = db.table("search", cache_size=0)
+        return len(table.search(_page.url == url)) > 0
 
 def indexNewWebpage(title: str, url: str, contents: List[str], timestamp: int) -> None:
     """Index a new webpage
@@ -37,20 +42,26 @@ def indexNewWebpage(title: str, url: str, contents: List[str], timestamp: int) -
         timestamp (int): Timestamp of the index
     """
 
+    # Force all the contents to be lowercase
+    lower_contents = []
+    for content in contents:
+        lower_contents.append(content.lower())
+
     with TinyDB(_engine_db_path) as db:
+        table = db.table("search", cache_size=0)
         # If an index exists for this page, update it
         if isPageIndexed(url, db=db):
-            db.update({
+            table.update({
                 "title": title,
                 "url": url,
-                "contents": contents,
+                "contents": lower_contents,
                 "timestamp":timestamp
             },_page.url == url)
         else:
-            db.insert({
+            table.insert({
                 "title": title,
                 "url": url,
-                "contents": contents,
+                "contents": lower_contents,
                 "timestamp":timestamp
             })
 
@@ -63,5 +74,20 @@ def query(keywords: List[str]) -> List[dict]:
     Returns:
         List[dict]: All matching pages
     """ 
-    
-    return []
+
+    # Determine the number of keywords
+    num_keywords = len(keywords)
+
+    # Convert the keywords to lowercase
+    lower_keywords = []
+    for keyword in keywords:
+        lower_keywords.append(keyword.lower())
+
+    def comparator(contents):
+        return any(lower_keywords == contents[i:num_keywords+i] for i in range(len(contents) - num_keywords+1))
+
+    with TinyDB(_engine_db_path, cache_size=0) as db:
+        db.clear_cache()
+        table = db.table("search", cache_size=0)
+        # Checks for permutations of the keywords in each page's contents
+        return table.search(_page.contents.test(comparator))
