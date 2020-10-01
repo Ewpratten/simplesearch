@@ -84,7 +84,18 @@ def query(keywords: List[str]) -> List[dict]:
         lower_keywords.append(keyword.lower())
 
     def comparator(contents):
-        return any(lower_keywords == contents[i:num_keywords+i] for i in range(len(contents) - num_keywords+1))
+        found_keys = 0
+
+        # Searches for keywords and keyword parts in the resulting texts
+        for word in contents:
+            for keyword in lower_keywords:
+                if word.lower() == keyword:
+                    found_keys += 1
+                if word.lower() and keyword in word.lower():
+                    found_keys += 1
+                    
+        return  (found_keys >= (num_keywords / 2))
+        # return any(lower_keywords == contents[i:num_keywords+i] for i in range(len(contents) - num_keywords+1))
 
     with TinyDB(_engine_db_path, cache_size=0) as db:
         db.clear_cache()

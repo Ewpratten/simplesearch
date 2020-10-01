@@ -34,6 +34,10 @@ class WebCrawlTask(object):
             response = requests.get(self.url)
         except requests.exceptions.ConnectionError as e:
             return
+        except requests.exceptions.MissingSchema as e:
+            return
+        except requests.exceptions.InvalidSchema as e:
+            return
 
         # Stop if this page does not exist
         if int(response.status_code / 100) != 2:
@@ -46,15 +50,24 @@ class WebCrawlTask(object):
         parser: BeautifulSoup = BeautifulSoup(raw_page_html, "html.parser")
 
         # Make an index call
-        self._indexPage(parser)
+        try:
+            self._indexPage(parser)
+        except:
+            pass
 
         # Search for every sublink
+        current_width = 0
         for a_tag in parser.find_all("a"):
+
+            if current_width > self.max_width:
+                break
 
             # Ensure there is HREF data
             if not "href" in a_tag.attrs:
                 continue
 
+            current_width += 1
+            
             # Sanitize the inputs
             new_url = a_tag.attrs["href"]
 
@@ -88,10 +101,12 @@ class WebCrawlTask(object):
         page_url = self.url
 
         all_p_tags = contents.find_all("p")
+        page_info = []
         if len(all_p_tags) > 0:
-            page_info = all_p_tags[0].contents[0].split(" ")
-        else:
-            page_info = []
+            if all_p_tags[0].contents[0]:
+                page_info = all_p_tags[0].contents[0].split(" ")
+               
+            
 
         # Make a DB write call
         indexNewWebpage(page_title, page_url, page_info, int(time.time()))
