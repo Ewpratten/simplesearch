@@ -7,6 +7,7 @@ cc_binary(
     ],
     deps = [
         "@cxxopts",
-        "//thirdparty/curlpp"
+        "//thirdparty/curlpp",
+        "//crawler/manager"
     ],
 )

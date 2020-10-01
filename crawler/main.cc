@@ -1,4 +1,8 @@
 #include <cxxopts.hpp>
+#include <iostream>
+#include <string>
+
+#include "manager/CrawlerManager.hh"
 
 int main(int argc, char *argv[]) {
     // Set up a program argument parser
@@ -35,6 +39,17 @@ int main(int argc, char *argv[]) {
         std::cout << "--url is required. See help (-h) for info" << std::endl;
         return 1;
     }
+
+    // Begin crawling
+    std::cout << "Beginning to crawl URL: " << args["url"].as<std::string>()
+              << std::endl;
+    manager::beginCrawling(args["url"].as<std::string>(),
+                           args["depth"].as<int>(), args["width"].as<int>(),
+                           true);
+    std::cout << "Done crawling URL: " << args["url"].as<std::string>()
+              << std::endl;
+    std::cout << manager::getCompletedTaskCount() << " Tasks completed"
+              << std::endl;
 
     return 0;
 }
