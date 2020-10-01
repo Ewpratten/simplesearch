@@ -77,7 +77,10 @@ def handleSearch(keywords: str, page: int) -> flask.Response:
     results_per_page = 5
     num_pages = int(num_results / results_per_page)
 
-    return flask.make_response(flask.render_template("results.html", page_num=page, keywords=keyword_tokens, results=results[(results_per_page * page - 1):][:results_per_page], num_pages = num_pages))
+    # Get the results for this page
+    page_results = results[(results_per_page * (page - 1)) :][: results_per_page ]
+
+    return flask.make_response(flask.render_template("results.html", page_num=page, keywords=keyword_tokens, results=page_results, num_pages = num_pages))
 
 if __name__ == "__main__":
     app.run(debug=True)

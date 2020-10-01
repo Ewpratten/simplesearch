@@ -34,6 +34,8 @@ class WebCrawlTask(object):
             response = requests.get(self.url)
         except requests.exceptions.ConnectionError as e:
             return
+        except requests.exceptions.MissingSchema as e:
+            return
 
         # Stop if this page does not exist
         if int(response.status_code / 100) != 2:
