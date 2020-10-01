@@ -1,12 +1,12 @@
-load("@rules_cc//cc:defs.bzl", "cc_binary")
+load("@rules_python//python:defs.bzl", "py_binary")
 
-cc_binary(
+py_binary(
     name = "crawler",
     srcs = [
-        "main.cc",
+        "main.py",
     ],
+    main = "main.py",
     deps = [
-        "@cxxopts",
-        "//thirdparty/curlpp"
+        "//crawler/lib:taskmanager",
     ],
 )
