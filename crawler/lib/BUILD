@@ -1,13 +1,6 @@
 load("@rules_python//python:defs.bzl", "py_library")
 load("@py3_deps//:requirements.bzl", "requirement")
 
-# py_library(
-#     name = "crawler",
-#     srcs = [
-#         "main.py",
-#     ],
-# )
-
 py_library(
     name = "taskmanager",
     srcs = [
@@ -27,5 +20,6 @@ py_library(
     deps = [
         requirement("requests"),
         requirement("BeautifulSoup4"),
+        "//database",
     ],
 )

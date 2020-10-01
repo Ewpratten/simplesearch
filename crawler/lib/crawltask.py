@@ -1,8 +1,12 @@
 # Task class for recursive web crawling
 
 import requests
+import time
+
 from typing import Generator
 from bs4 import BeautifulSoup
+
+from database.database import indexNewWebpage
 
 class WebCrawlTask(object):
     """Task class for recursive web crawling"""
@@ -78,4 +82,16 @@ class WebCrawlTask(object):
         return self.url
 
     def _indexPage(self, contents: BeautifulSoup) -> None:
-        pass
+        
+        # Get page data
+        page_title = contents.find("title").contents
+        page_url = self.url
+
+        all_p_tags = contents.find_all("p")
+        if len(all_p_tags) > 0:
+            page_info = all_p_tags[0].contents[0].split(" ")
+        else:
+            page_info = []
+
+        # Make a DB write call
+        indexNewWebpage(page_title, page_url, page_info, int(time.time()))
