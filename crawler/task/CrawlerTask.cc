@@ -1,6 +1,10 @@
 #include "CrawlerTask.hh"
 
+#include <curlpp/Easy.hpp>
+#include <curlpp/Exception.hpp>
+#include <curlpp/Options.hpp>
 #include <curlpp/cURLpp.hpp>
+#include <iostream>
 
 namespace crawler {
 
@@ -13,7 +17,19 @@ CrawlerTask::CrawlerTask(std::string url, int maxDepth, int maxWidth) {
     this->maxWidth = maxWidth;
 }
 
-void CrawlerTask::run(std::vector<CrawlerTask> &taskQueue) {}
+void CrawlerTask::run(std::vector<CrawlerTask> &taskQueue) {
+    // Get an easy handle
+    cURLpp::Easy handle;
+
+    // Begin the request
+    try {
+        handle.setOpt(cURLpp::Options::Url(this->url));
+        handle.perform();
+    } catch (cURLpp::LibcurlRuntimeError &e) {
+        std::cout << "Invalid URL: " << this->url << std::endl;
+        return;
+    }
+}
 
 void CrawlerTask::createNewSubTask(std::string url,
                                    std::vector<CrawlerTask> &taskQueue) {
