@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>About | SimpleSearch</title>
+<title>{{" ".join(keywords)}} | SimpleSearch</title>
 {% endblock %}
 
 {% block content %}
@@ -20,14 +20,43 @@
 
     <div style="margin:auto;text-align:center;width:max-content;">
         <form class="form-inline" method="POST">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q"
+                value="{{" ".join(keywords)}}">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" style="margin:auto;">Search</button>
         </form>
     </div>
 
+    <!-- Spacer -->
+    <div style="height:5vh;"></div>
+
     <!-- Search content -->
     <div>
-        
+        <div class="list-group">
+
+            {% for result in results %}
+            <a href="{{result["url"]}}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{result["title"][0]}}</h5>
+                    <!-- <small class="text-muted">3 days ago</small> -->
+                </div>
+                <p class="mb-1">{{" ".join(result["contents"])[:100]}}</p>
+            </a>
+            {% endfor %}
+
+        </div>
+        <br>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_num > 1 %}
+                <li class="page-item"><a class="page-link" href="{{page_num - 1}}">Previous</a></li>
+                {% endif %}
+
+                {% if page_num < num_pages %}
+                <li class="page-item"><a class="page-link" href="{{page_num + 1}}">Next</a></li>
+                {% endif %}
+
+            </ul>
+        </nav>
     </div>
 
 
